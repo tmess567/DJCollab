@@ -22,7 +22,7 @@
   <h1>Available Songs</h1>
   {{#each mp3s}}
   <div style="display:block; margin:50px">
-    <img src='{{ (picture || "/unavailable.png") }}' style="display:inline-block; width:200px " />
+    <img src='{{ picture }}' style="display:inline-block; width:200px " />
     <ul style="display:inline-block">
       <li><b>Name: </b><span>{{ filename }}</span></li>
       <li><b>Album: </b><span>{{ album }}</span></li>
