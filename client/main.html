@@ -1,0 +1,37 @@
+<head>
+  <title>DJCollab</title>
+</head>
+
+<body>
+<div class="col-md-6">
+  <h1>Upload a Song</h1>
+  {{> upload_bootstrap }}
+  {{> dropzone }}
+  <div id="data" style="display:none; margin:50px;">
+    <img id="picture" style="display:inline-block; width:200px " />
+    <ul style="display:inline-block">
+      <li><b>Album: </b><span id="album"></span></li>
+      <li><b>Artist: </b><span id="artist"></span></li>
+      <li><b>Genre: </b><span id="genre"></span></li>
+      <li><b>Title: </b><span id="title"></span></li>
+      <li><b>Track: </b><span id="track"></span></li>
+    </ul>
+  </div>
+</div>
+<div class="col-md-6">
+  <h1>Available Songs</h1>
+  {{#each mp3s}}
+  <div style="display:block; margin:50px">
+    <img src='{{ (picture || "/unavailable.png") }}' style="display:inline-block; width:200px " />
+    <ul style="display:inline-block">
+      <li><b>Name: </b><span>{{ filename }}</span></li>
+      <li><b>Album: </b><span>{{ album }}</span></li>
+      <li><b>Artist: </b><span>{{ artist }}</span></li>
+      <li><b>Genre: </b><span>{{ genre }}</span></li>
+      <li><b>Title: </b><span>{{ title }}</span></li>
+      <li><b>Track: </b><span>{{ track }}</span></li>
+    </ul>
+  </div>
+  {{/each}}
+</div>
+</body>

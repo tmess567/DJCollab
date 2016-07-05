@@ -1,0 +1,11 @@
+{
+  "name": "DJCollab",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "jsmediatags": "^3.2.1",
+    "meteor-node-stubs": "^0.2.3"
+  }
+}
