@@ -45,58 +45,40 @@ $( document ).ready( function(){
 	});
 });
 
-$('div.jqDropZone').on('drop', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var files = e.dataTransfer.files; // Array of all files
-        for (var i=0, file; file=files[i]; i++) {
-        	jsmediatags.read(file, {
-			onSuccess: function(tag) {
-				var pic = "";
-				var image = tag.tags.picture;
-		          if (image) {
-		            var base64String = "";
-		            for (var i = 0; i < image.data.length; i++) {
-		                base64String += String.fromCharCode(image.data[i]);
-		            }
-		            var base64 = "data:" + image.format + ";base64," +
-		                    window.btoa(base64String);
-					pic = base64;
-		          } else {
-		          	pic = "/unavailable.png"
-		          }
-
-		        MP3S.insert({
-					album: tag.tags.album || 'undefined',
-					artist: tag.tags.album || 'undefined',
-					genre: tag.tags.genre || 'undefined',
-					title: tag.tags.title || 'undefined',
-					track: tag.tags.track || 'undefined',
-					picture: pic,
-					filename: file.name,
-					url: "/upload/" + file.name
-				});
-			},
-			onError: function(error) {
-				console.log(':(', error.type, error.info);
-			}
-		});
-        }
-    });
-
-Uploader.finished = function(index, fileInfo, templateContext) {
-	//console.log(fileInfo.url);
-	MP3S.insert({
-		album: $('#album').text(),
-		artist: $('#artist').text(),
-		genre: $('#genre').text(),
-		title: $('#title').text(),
-		track: $('#track').text(),
-		picture: $('#picture').attr("src"),
-		filename: fileInfo.name,
-		url: fileInfo.url
-	});
-}
 Template.body.helpers({
-  mp3s: MP3S.find()
+  mp3s: MP3S.find(),
+  callbacks: function(){
+  	return {
+  		finished: function(index, fileInfo, templateContext) {
+  			//console.log(fileInfo);
+  			jsmediatags.read(fileInfo.url, {
+				onSuccess: function(tag) {
+					var pic = "";
+					var image = tag.tags.picture;
+					if (image) {
+			            var base64String = "";
+			            for (var i = 0; i < image.data.length; i++) {
+			                base64String += String.fromCharCode(image.data[i]);
+			            }
+			            var base64 = "data:" + image.format + ";base64," +
+			                    window.btoa(base64String);
+						pic = base64;
+			          } else {
+			          	pic = "/unavailable.png"
+			          }
+					MP3S.insert({
+						album: tag.tags.album || "undefined",
+						artist: tag.tags.artist || "undefined",
+						genre: tag.tags.genre || "undefined",
+						title: tag.tags.title || "undefined",
+						track: tag.tags.track || "undefined",
+						picture: pic,
+						filename: fileInfo.name,
+						url: fileInfo.url
+					});
+				}
+			});
+  		}
+  	}
+  }
 });
